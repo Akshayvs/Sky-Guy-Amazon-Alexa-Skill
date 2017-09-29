@@ -7,6 +7,7 @@
 
 'use strict';
 const Alexa = require('alexa-sdk');
+const weatherUtil = require('./lib/weather-data-util');
 
 //=========================================================================================================================================
 //TODO: The items below this comment need your attention.
@@ -15,33 +16,10 @@ const Alexa = require('alexa-sdk');
 const APP_ID = 'amzn1.ask.skill.af476a0e-515c-49f9-8f37-207cfa667d84';
 
 const SKILL_NAME = 'Sky Guy';
-const GET_FACT_MESSAGE = "Here is the weather Update";
-const HELP_MESSAGE = 'You can say tell me a space fact, or, you can say exit... What can I help you with?';
+const GET_FACT_MESSAGE = 'Here is the weather Update';
 const HELP_REPROMPT = 'What can I help you with?';
 const STOP_MESSAGE = 'Goodbye!';
-
-//=========================================================================================================================================
-//TODO: Replace this data with your own.  You can find translations of this data at http://github.com/alexa/skill-sample-node-js-fact/data
-//=========================================================================================================================================
-const data = [
-    'A year on Mercury is just 88 days long.',
-    'Despite being farther from the Sun, Venus experiences higher temperatures than Mercury.',
-    'Venus rotates counter-clockwise, possibly because of a collision in the past with an asteroid.',
-    'On Mars, the Sun appears about half the size as it does on Earth.',
-    'Earth is the only planet not named after a god.',
-    'Jupiter has the shortest day of all the planets.',
-    'The Milky Way galaxy will collide with the Andromeda Galaxy in about 5 billion years.',
-    'The Sun contains 99.86% of the mass in the Solar System.',
-    'The Sun is an almost perfect sphere.',
-    'A total solar eclipse can happen once every 1 to 2 years. This makes them a rare event.',
-    'Saturn radiates two and a half times more energy into space than it receives from the sun.',
-    'The temperature inside the Sun can reach 15 million degrees Celsius.',
-    'The Moon is moving approximately 3.8 cm away from our planet every year.',
-];
-
-//=========================================================================================================================================
-//Editing anything below this line might break your skill.
-//=========================================================================================================================================
+var here;
 
 exports.handler = function(event, context, callback) {
     var alexa = Alexa.handler(event, context);
@@ -51,32 +29,56 @@ exports.handler = function(event, context, callback) {
 };
 
 const handlers = {
-    'LaunchRequest': function () {
+    'LaunchRequest': function() {
+
         this.emit('GetNewFactIntent');
     },
-    'GetNewFactIntent': function () {
-        const factArr = data;
-        const factIndex = Math.floor(Math.random() * factArr.length);
-        const randomFact = factArr[factIndex];
-        const speechOutput = GET_FACT_MESSAGE + randomFact;
 
-        this.response.cardRenderer(SKILL_NAME, randomFact);
-        this.response.speak(speechOutput);
-        this.emit(':responseReady');
+    'GetNewFactIntent': function() {
+        here = this;
+
+        const payLoad = {
+            route: 'conditions',
+            state: 'CA',
+            city:'san_francisco'
+        };
+
+        weatherUtil.getWeatherObject(payLoad , function(err, resp) {
+            console.log('  returned value = ' + resp.toString());
+            const speechOutput = 'The temperature feels like ' + resp;
+            here.response.cardRenderer(SKILL_NAME, resp);
+            here.response.speak(speechOutput);
+            here.emit(':responseReady');
+        });
     },
-    'AMAZON.HelpIntent': function () {
+
+    // replica of get new fact intent to get weather forecast
+    'GetForecastIntent': function() {
+        here = this;
+        weatherUtil.getWeatherObject('forecast', 'CA', 'san_francisco' , function(err, resp) {
+            console.log('  returned value = ' + resp.toString());
+            const speechOutput = 'The temperature feels like ' + resp;
+
+            //here.response.cardRenderer(SKILL_NAME, resp);
+            here.response.speak(speechOutput);
+            here.emit(':responseReady');
+        });
+    },
+
+    'AMAZON.HelpIntent': function() {
+        const HELP_MESSAGE = 'You can say tell me a space fact, or, you can say exit... What can I help you with?';
         const speechOutput = HELP_MESSAGE;
         const reprompt = HELP_REPROMPT;
-
         this.response.speak(speechOutput).listen(reprompt);
         this.emit(':responseReady');
     },
-    'AMAZON.CancelIntent': function () {
+    'AMAZON.CancelIntent': function() {
         this.response.speak(STOP_MESSAGE);
         this.emit(':responseReady');
     },
-    'AMAZON.StopIntent': function () {
+    'AMAZON.StopIntent': function() {
         this.response.speak(STOP_MESSAGE);
+        console.log(' After stop message spoken');
         this.emit(':responseReady');
-    },
+    }
 };

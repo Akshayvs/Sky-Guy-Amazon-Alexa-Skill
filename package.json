@@ -4,7 +4,9 @@
   "description": "Amazon Alexa Skill for providing weather updates using the weather channel developer API",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "jscs": "jscs lib index.js ",
+    "jshint": "jshint lib index.js"
   },
   "keywords": [
     "alexa",
@@ -18,10 +20,15 @@
   "dependencies": {
     "alexa-sdk": "1.0.12",
     "express": "4.16.0",
-    "lodash": "4.17.4"
+    "lodash": "4.17.4",
+    "request": "2.83.0",
+    "string-format": "0.5.0"
   },
   "devDependencies": {
+    "bespoken-tools": "^1.1.0",
     "claudia": "2.14.2",
+    "jscs": "^3.0.7",
+    "jshint": "^2.9.5",
     "mocha": "3.5.3",
     "sinon": "4.0.0"
   }
