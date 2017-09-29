@@ -7,6 +7,7 @@
 
 'use strict';
 const Alexa = require('alexa-sdk');
+const weatherUtil = require('./lib/weather-data-util');
 
 //=========================================================================================================================================
 //TODO: The items below this comment need your attention.
@@ -39,9 +40,9 @@ const data = [
     'The Moon is moving approximately 3.8 cm away from our planet every year.',
 ];
 
-//=========================================================================================================================================
-//Editing anything below this line might break your skill.
-//=========================================================================================================================================
+// =========================================================================================================================================
+// Editing anything below this line might break your skill.
+// =========================================================================================================================================
 
 exports.handler = function(event, context, callback) {
     var alexa = Alexa.handler(event, context);
@@ -55,19 +56,19 @@ const handlers = {
         this.emit('GetNewFactIntent');
     },
     'GetNewFactIntent': function () {
-        const factArr = data;
-        const factIndex = Math.floor(Math.random() * factArr.length);
-        const randomFact = factArr[factIndex];
-        const speechOutput = GET_FACT_MESSAGE + randomFact;
+        weatherUtil.getWeatherObject('conditions', 'CA', 'san_francisco' , function ( err ,resp ){
 
-        this.response.cardRenderer(SKILL_NAME, randomFact);
-        this.response.speak(speechOutput);
-        this.emit(':responseReady');
+            const speechOutput= 'The temperature feels like ' +  response;
+            this.response.cardRenderer(SKILL_NAME, response);
+            this.response.speak(speechOutput);
+            this.emit(':responseReady');
+
+            console.log( " RESPONSE = " + resp);
+        });
     },
     'AMAZON.HelpIntent': function () {
         const speechOutput = HELP_MESSAGE;
         const reprompt = HELP_REPROMPT;
-
         this.response.speak(speechOutput).listen(reprompt);
         this.emit(':responseReady');
     },
