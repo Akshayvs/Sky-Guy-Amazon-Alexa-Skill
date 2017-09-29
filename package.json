@@ -1,0 +1,28 @@
+{
+  "name": "Sky-Guy",
+  "version": "1.0.0",
+  "description": "Amazon Alexa Skill for providing weather updates using the weather channel developer API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "alexa",
+    "skill",
+    "fact",
+    "weather",
+    "TheWeatherChannel"
+  ],
+  "author": "Akshay93",
+  "license": "MIT-open source",
+  "dependencies": {
+    "alexa-sdk": "1.0.12",
+    "express": "4.16.0",
+    "lodash": "4.17.4"
+  },
+  "devDependencies": {
+    "claudia": "2.14.2",
+    "mocha": "3.5.3",
+    "sinon": "4.0.0"
+  }
+}
