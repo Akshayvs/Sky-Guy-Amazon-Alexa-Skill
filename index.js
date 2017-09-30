@@ -9,6 +9,8 @@ const APP_ID = config.skillParams.applicationId;
 const SKILL_NAME = config.skillParams.skillName;
 var self;
 
+var addressPayload ;
+
 exports.handler = function(event, context, callback) {
     var alexa = Alexa.handler(event, context);
     alexa.appId = APP_ID;
@@ -21,6 +23,9 @@ const handlers = {
         self = this;
         const locationAccessTokesn = this.event.context.System;
 
+
+        console.log( "CONFIG = " + JSON.stringify(config));
+
         locationUtil.getStateAndCity(locationAccessTokesn, function(error, response) {
             if (error) {
                 const speechOutput = 'We are having trouble getting your location details. ' +
@@ -29,6 +34,7 @@ const handlers = {
                 self.response.speak(speechOutput);
                 self.emit(':responseReady');
             } else {
+                addressPayload = response;
                 self.emit('getMyLocalTemperatureIntent');
             }
         });
@@ -37,16 +43,12 @@ const handlers = {
     'getMyLocalTemperatureIntent': function() {
         self = this;
 
-        const payLoad = {
-            route: 'conditions',
-            state: 'CA',
-            city:'san_francisco'
-        };
+        addressPayload.route = 'conditions';
 
-        weatherUtil.getWeatherObject(payLoad , function(err, resp) {
+        weatherUtil.getWeatherObject(addressPayload , function(err, resp) {
             console.log('  returned value = ' + resp.toString());
             const speechOutput = 'The temperature feels like ' + resp;
-            self.response.cardRenderer(SKILL_NAME, resp);
+            self.response.cardRenderer(SKILL_NAME, speechOutput);
             self.response.speak(speechOutput);
             self.emit(':responseReady');
         });
