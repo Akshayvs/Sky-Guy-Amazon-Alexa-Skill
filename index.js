@@ -1,25 +1,13 @@
-/* eslint-disable  func-names */
-/* eslint quote-props: ["error", "consistent"]*/
-/**
- * The Intent Schema, Custom Slots and Sample Utterances for this skill, as well
- * as testing instructions are located at https://github.com/alexa/skill-sample-nodejs-fact
- **/
-
 'use strict';
+
 const Alexa = require('alexa-sdk');
-const weatherUtil = require('./lib/weather-data-util');
+const weatherUtil = require('./lib/weather-data-util.js');
+const config = require('./config/default.js');
+const locationUtil = require('./lib/location-util.js');
 
-//=========================================================================================================================================
-//TODO: The items below this comment need your attention.
-//=========================================================================================================================================
-
-const APP_ID = 'amzn1.ask.skill.af476a0e-515c-49f9-8f37-207cfa667d84';
-
-const SKILL_NAME = 'Sky Guy';
-const GET_FACT_MESSAGE = 'Here is the weather Update';
-const HELP_REPROMPT = 'What can I help you with?';
-const STOP_MESSAGE = 'Goodbye!';
-var here;
+const APP_ID = config.skillParams.applicationId;
+const SKILL_NAME = config.skillParams.skillName;
+var self;
 
 exports.handler = function(event, context, callback) {
     var alexa = Alexa.handler(event, context);
@@ -30,12 +18,24 @@ exports.handler = function(event, context, callback) {
 
 const handlers = {
     'LaunchRequest': function() {
+        self = this;
+        const locationAccessTokesn = this.event.context.System;
 
-        this.emit('GetNewFactIntent');
+        locationUtil.getStateAndCity(locationAccessTokesn, function(error, response) {
+            if (error) {
+                const speechOutput = 'We are having trouble getting your location details. ' +
+                    'Please make sure you have enabled location access for this skill' ;
+                self.response.cardRenderer(SKILL_NAME, speechOutput);
+                self.response.speak(speechOutput);
+                self.emit(':responseReady');
+            } else {
+                self.emit('getMyLocalTemperatureIntent');
+            }
+        });
     },
 
-    'GetNewFactIntent': function() {
-        here = this;
+    'getMyLocalTemperatureIntent': function() {
+        self = this;
 
         const payLoad = {
             route: 'conditions',
@@ -46,37 +46,44 @@ const handlers = {
         weatherUtil.getWeatherObject(payLoad , function(err, resp) {
             console.log('  returned value = ' + resp.toString());
             const speechOutput = 'The temperature feels like ' + resp;
-            here.response.cardRenderer(SKILL_NAME, resp);
-            here.response.speak(speechOutput);
-            here.emit(':responseReady');
+            self.response.cardRenderer(SKILL_NAME, resp);
+            self.response.speak(speechOutput);
+            self.emit(':responseReady');
         });
     },
 
     // replica of get new fact intent to get weather forecast
-    'GetForecastIntent': function() {
-        here = this;
-        weatherUtil.getWeatherObject('forecast', 'CA', 'san_francisco' , function(err, resp) {
-            console.log('  returned value = ' + resp.toString());
-            const speechOutput = 'The temperature feels like ' + resp;
+    'GetMyLocalForecastIntent': function() {
+        self = this;
 
-            //here.response.cardRenderer(SKILL_NAME, resp);
-            here.response.speak(speechOutput);
-            here.emit(':responseReady');
+        const payLoad = {
+            route: 'conditions',
+            state: 'CA',
+            city:'san_francisco'
+        };
+
+        weatherUtil.getWeatherObject(payLoad , function(err, resp) {
+            console.log('  returned value = ' + resp.toString());
+            const speechOutput = resp;
+            self.response.cardRenderer(SKILL_NAME, resp);
+            self.response.speak(speechOutput);
+            self.emit(':responseReady');
         });
     },
 
     'AMAZON.HelpIntent': function() {
-        const HELP_MESSAGE = 'You can say tell me a space fact, or, you can say exit... What can I help you with?';
-        const speechOutput = HELP_MESSAGE;
-        const reprompt = HELP_REPROMPT;
+        const speechOutput = 'You can say things like, What is the weather forecast? or,' +
+            ' what is the feels like temperature?  or, you can say exit... What can I help you with?';
+        const reprompt = 'What can I help you with?';
         this.response.speak(speechOutput).listen(reprompt);
         this.emit(':responseReady');
     },
     'AMAZON.CancelIntent': function() {
-        this.response.speak(STOP_MESSAGE);
+        this.response.speak('Good Bye !!');
         this.emit(':responseReady');
     },
     'AMAZON.StopIntent': function() {
+        const STOP_MESSAGE = 'Goodbye!';
         this.response.speak(STOP_MESSAGE);
         console.log(' After stop message spoken');
         this.emit(':responseReady');
