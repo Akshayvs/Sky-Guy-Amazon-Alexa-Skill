@@ -1,0 +1,51 @@
+{
+  "intents": [
+    {
+      "name": "AMAZON.CancelIntent",
+      "samples": [
+        "stop"
+      ]
+    },
+    {
+      "name": "AMAZON.HelpIntent",
+      "samples": [
+        "what can i say",
+        "what can you do",
+        "guide"
+      ]
+    },
+    {
+      "name": "AMAZON.SearchAction<object@WeatherForecast>"
+    },
+    {
+      "name": "AMAZON.SearchAction<object@WeatherForecast[temperature]>"
+    },
+    {
+      "name": "AMAZON.SearchAction<object@WeatherForecast[weatherCondition]>"
+    },
+    {
+      "name": "AMAZON.StopIntent",
+      "samples": [
+        "exit",
+        "quit"
+      ]
+    },
+    {
+      "name": "GetMyLocalForecastIntent",
+      "samples": [
+        "Forecast",
+        "how does the weather look like"
+      ],
+      "slots": []
+    },
+    {
+      "name": "getMyLocalTemperatureIntent",
+      "samples": [
+        "what's the temperature today",
+        "temperature",
+        "what is the temperature today"
+      ],
+      "slots": []
+    }
+  ]
+}

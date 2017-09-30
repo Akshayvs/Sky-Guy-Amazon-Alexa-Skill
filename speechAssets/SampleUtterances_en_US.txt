@@ -6,3 +6,8 @@ guide
 what can you do ?
 what can i say ?
 
+
+Cancel Intent
+stop
+
+
