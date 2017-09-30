@@ -23,8 +23,7 @@ const handlers = {
         self = this;
         const locationAccessTokesn = this.event.context.System;
 
-
-        console.log( "CONFIG = " + JSON.stringify(config));
+        console.log('CONFIG = ' + JSON.stringify(config));
 
         locationUtil.getStateAndCity(locationAccessTokesn, function(error, response) {
             if (error) {
