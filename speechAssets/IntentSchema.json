@@ -3,38 +3,31 @@
     {
       "name": "AMAZON.CancelIntent",
       "samples": [
-        "stop"
+        "no"
       ]
     },
     {
       "name": "AMAZON.HelpIntent",
-      "samples": [
-        "what can i say",
-        "what can you do",
-        "guide"
-      ]
-    },
-    {
-      "name": "AMAZON.SearchAction<object@WeatherForecast>"
-    },
-    {
-      "name": "AMAZON.SearchAction<object@WeatherForecast[temperature]>"
-    },
-    {
-      "name": "AMAZON.SearchAction<object@WeatherForecast[weatherCondition]>"
+      "samples": []
     },
     {
       "name": "AMAZON.StopIntent",
       "samples": [
-        "exit",
-        "quit"
+        "thanks",
+        "No Thank you",
+        "thank you"
       ]
     },
     {
       "name": "GetMyLocalForecastIntent",
       "samples": [
         "Forecast",
-        "how does the weather look like"
+        "local forecast",
+        "what's my forecast",
+        "what is my forecast",
+        "tell me today's forecast",
+        "current forecast",
+        "what is the current foreccast"
       ],
       "slots": []
     },
@@ -43,7 +36,19 @@
       "samples": [
         "what's the temperature today",
         "temperature",
-        "what is the temperature today"
+        "what is the temperature today",
+        "current temperature",
+        "what is the current temperature"
+      ],
+      "slots": []
+    },
+    {
+      "name": "GetQuoteIntent",
+      "samples": [
+        "quote",
+        "positive quote",
+        "Give me a positive quote",
+        "give me an interesting quote"
       ],
       "slots": []
     }
