@@ -25,13 +25,13 @@
     "string-format": "0.5.0"
   },
   "devDependencies": {
-    "bespoken-tools": "^1.1.0",
-    "chai": "^4.1.2",
+    "bespoken-tools": "1.1.0",
+    "chai": "4.1.2",
     "claudia": "2.14.2",
-    "jscs": "^3.0.7",
-    "jshint": "^2.9.5",
+    "jscs": "3.0.7",
+    "jshint": "2.9.5",
     "mocha": "3.5.3",
-    "mockery": "^2.1.0",
+    "mockery": "2.1.0",
     "sinon": "4.0.0"
   }
 }

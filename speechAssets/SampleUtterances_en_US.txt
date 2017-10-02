@@ -1,13 +1,8 @@
+Try saying things in the following sequence.
 
-
-HelpIntent:
-
-guide
-what can you do ?
-what can i say ?
-
-
-Cancel Intent
-stop
-
-
+Alexa, Open Sky Guy.
+Help.
+Tell me today's forecast.
+Give me an interesting quote.
+What is the current temperature.
+Thank you.
