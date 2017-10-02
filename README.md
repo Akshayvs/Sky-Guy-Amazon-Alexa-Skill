@@ -8,6 +8,7 @@ The response from Google API is sanitized to extract the required information an
 I have used Node.js as the development language along with amazon alexa node-sdk and AWS lambda for cloud deployment.
 I have used Claudia for easy deployment of the app on AWS lambda
 
+Here is a link to the demo Youtube Video : https://www.youtube.com/watch?v=tM3ibvQLKzw
 
 ### Good reference resource.
 
