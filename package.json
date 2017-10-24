@@ -19,7 +19,6 @@
   "license": "MIT-open source",
   "dependencies": {
     "alexa-sdk": "1.0.12",
-    "express": "4.16.0",
     "lodash": "4.17.4",
     "request": "2.83.0",
     "string-format": "0.5.0"
